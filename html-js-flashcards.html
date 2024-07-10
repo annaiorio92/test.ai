@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard IA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+        .flashcard {
+            width: 320px;
+            height: 220px;
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .flashcard-front {
+            background-color: #4299e1;
+            color: white;
+        }
+        .flashcard-back {
+            background-color: #667eea;
+            color: white;
+            transform: rotateY(180deg);
+        }
+        button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3182ce;
+        }
+        #counter {
+            margin-top: 1rem;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Flashcard IA</h1>
+        <div class="flashcard" id="flashcard">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">
+                    <p id="term"></p>
+                </div>
+                <div class="flashcard-back">
+                    <p id="definition"></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button onclick="prevCard()">Precedente</button>
+            <button onclick="flipCard()">Gira</button>
+            <button onclick="nextCard()">Successiva</button>
+        </div>
+        <p id="counter"></p>
+    </div>
+
+    <script>
+        const flashcardsData = [
+            {
+                term: "Intelligenza Artificiale (AI)",
+                definition: "Un ramo dell'informatica il cui obiettivo è riprodurre la complessità del meccanismo cognitivo umano. Il compito di queste macchine è proprio quello di apprendere e reagire agli input come farebbe il nostro cervello."
+            },
+            {
+                term: "Machine Learning",
+                definition: "Un ramo dell'AI che permette alle macchine di apprendere dai dati migliorando le prestazioni nel tempo."
+            },
+            {
+                term: "Deep Learning",
+                definition: "Una tecnica di machine learning che utilizza reti neurali profonde per analizzare vari livelli di dati, ispirandosi al funzionamento del cervello umano."
+            },
+            {
+                term: "LLM (Large Language Model)",
+                definition: "Modelli avanzati di apprendimento capaci di comprendere, generare e interpretare il linguaggio umano per elaborare e produrre testi complessi. GPT e PaLM 2 sono gli LLM di chat GPT e Gemini."
+            },
+            {
+                term: "Token",
+                definition: "Unità di informazione usata nell'IA generativa per analizzare e generare contenuti. Possono essere parole, numeri, immagini o altri dati. Sono i mattoncini con cui l'IA comprende un prompt, quindi un input."
+            },
+            {
+                term: "Algoritmo",
+                definition: "Una serie di istruzioni o regole, quasi una ricetta, per eseguire compiti o risolvere problemi, cuore pulsante dell'IA che guida le macchine nell'apprendimento e nella generazione di contenuti."
+            }
+        ];
+
+        let currentCard = 0;
+
+        function updateCard() {
+            document.getElementById('term').textContent = flashcardsData[currentCard].term;
+            document.getElementById('definition').textContent = flashcardsData[currentCard].definition;
+            document.getElementById('counter').textContent = `Carta ${currentCard + 1} di ${flashcardsData.length}`;
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            currentCard = (currentCard + 1) % flashcardsData.length;
+            updateCard();
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+
+        function prevCard() {
+            currentCard = (currentCard - 1 + flashcardsData.length) % flashcardsData.length;
+            updateCard();
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+
+        updateCard();
+    </script>
+</body>
+</html>
